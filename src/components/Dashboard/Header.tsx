@@ -1,27 +1,22 @@
 import React from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import { useTheme } from '../../contexts/ThemeContext';
-import { User as UserIcon, LogOut, Search, Sun, Moon, Palette } from 'lucide-react';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { User as UserIcon, LogOut, Search, Settings } from 'lucide-react';
 import { User } from '../../types';
+import LocationSelector from '../common/LocationSelector';
+import LanguageSelector from '../common/LanguageSelector';
+import ThemeSelector from '../common/ThemeSelector';
 
 interface HeaderProps {
   user: User | null;
   searchTerm: string;
   onSearchChange: (term: string) => void;
+  onProfileClick: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ user, searchTerm, onSearchChange }) => {
+const Header: React.FC<HeaderProps> = ({ user, searchTerm, onSearchChange, onProfileClick }) => {
   const { logout } = useAuth();
-  const { theme, toggleTheme } = useTheme();
-
-  const getThemeIcon = () => {
-    switch (theme) {
-      case 'light': return <Sun className="w-5 h-5" />;
-      case 'dark': return <Moon className="w-5 h-5" />;
-      case 'cinema': return <Palette className="w-5 h-5" />;
-      default: return <Moon className="w-5 h-5" />;
-    }
-  };
+  const { t } = useLanguage();
 
   return (
     <header className="bg-slate-800 border-b border-slate-700 sticky top-0 z-50">
@@ -31,11 +26,13 @@ const Header: React.FC<HeaderProps> = ({ user, searchTerm, onSearchChange }) => 
             CineMax
           </h1>
           
+          <LocationSelector />
+          
           <div className="relative hidden md:block">
             <Search className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
             <input
               type="text"
-              placeholder="Search movies..."
+              placeholder={t('search')}
               value={searchTerm}
               onChange={(e) => onSearchChange(e.target.value)}
               className="pl-10 pr-4 py-2 w-80 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
@@ -44,16 +41,14 @@ const Header: React.FC<HeaderProps> = ({ user, searchTerm, onSearchChange }) => 
         </div>
 
         <div className="flex items-center space-x-4">
-          <button
-            onClick={toggleTheme}
-            className="p-2 text-gray-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
-            title={`Switch to ${theme === 'light' ? 'dark' : theme === 'dark' ? 'cinema' : 'light'} theme`}
-          >
-            {getThemeIcon()}
-          </button>
+          <LanguageSelector />
+          <ThemeSelector />
 
           <div className="flex items-center space-x-3">
-            <div className="flex items-center space-x-2">
+            <button
+              onClick={onProfileClick}
+              className="flex items-center space-x-2 hover:bg-slate-700 rounded-lg p-2 transition-colors"
+            >
               <div className="w-8 h-8 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center">
                 <UserIcon className="w-4 h-4 text-white" />
               </div>
@@ -61,12 +56,12 @@ const Header: React.FC<HeaderProps> = ({ user, searchTerm, onSearchChange }) => 
                 <p className="text-white font-medium">{user?.username}</p>
                 <p className="text-gray-400 text-sm">{user?.role}</p>
               </div>
-            </div>
+            </button>
 
             <button
               onClick={logout}
               className="p-2 text-gray-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"
-              title="Logout"
+              title={t('logout')}
             >
               <LogOut className="w-5 h-5" />
             </button>
@@ -80,7 +75,7 @@ const Header: React.FC<HeaderProps> = ({ user, searchTerm, onSearchChange }) => 
           <Search className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
           <input
             type="text"
-            placeholder="Search movies..."
+            placeholder={t('search')}
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
             className="pl-10 pr-4 py-2 w-full bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"

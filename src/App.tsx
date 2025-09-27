@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { AuthProvider } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { LanguageProvider } from './contexts/LanguageContext';
+import { LocationProvider } from './contexts/LocationContext';
 import { useAuth } from './contexts/AuthContext';
 import Home from './components/Home';
 import LoginSelection from './components/LoginSelection';
@@ -8,6 +10,8 @@ import LoginForm from './components/Auth/LoginForm';
 import RegisterForm from './components/Auth/RegisterForm';
 import Dashboard from './components/Dashboard/Dashboard';
 import BookingFlow from './components/Booking/BookingFlow';
+import ProfilePage from './components/Profile/ProfilePage';
+import AdminPanel from './components/Admin/AdminPanel';
 import { Movie } from './types';
 
 type AppState = 
@@ -18,7 +22,9 @@ type AppState =
   | 'admin-login' 
   | 'admin-register'
   | 'dashboard'
-  | 'booking';
+  | 'booking'
+  | 'profile'
+  | 'admin';
 
 const AppContent: React.FC = () => {
   const [currentState, setCurrentState] = useState<AppState>('home');
@@ -88,7 +94,13 @@ const AppContent: React.FC = () => {
         );
       
       case 'dashboard':
-        return <Dashboard onSelectMovie={handleMovieSelect} />;
+        return (
+          <Dashboard 
+            onSelectMovie={handleMovieSelect} 
+            onShowProfile={() => setCurrentState('profile')}
+            onShowAdmin={() => setCurrentState('admin')}
+          />
+        );
       
       case 'booking':
         return selectedMovie ? (
@@ -97,8 +109,18 @@ const AppContent: React.FC = () => {
             onBack={() => setCurrentState('dashboard')} 
           />
         ) : (
-          <Dashboard onSelectMovie={handleMovieSelect} />
+          <Dashboard 
+            onSelectMovie={handleMovieSelect} 
+            onShowProfile={() => setCurrentState('profile')}
+            onShowAdmin={() => setCurrentState('admin')}
+          />
         );
+      
+      case 'profile':
+        return <ProfilePage onBack={() => setCurrentState('dashboard')} />;
+      
+      case 'admin':
+        return <AdminPanel onBack={() => setCurrentState('dashboard')} />;
       
       default:
         return <Home onNavigate={() => setCurrentState('login-selection')} />;
@@ -115,9 +137,13 @@ const AppContent: React.FC = () => {
 function App() {
   return (
     <ThemeProvider>
-      <AuthProvider>
-        <AppContent />
-      </AuthProvider>
+      <LanguageProvider>
+        <LocationProvider>
+          <AuthProvider>
+            <AppContent />
+          </AuthProvider>
+        </LocationProvider>
+      </LanguageProvider>
     </ThemeProvider>
   );
 }

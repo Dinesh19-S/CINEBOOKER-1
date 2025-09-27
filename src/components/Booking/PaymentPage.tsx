@@ -23,9 +23,9 @@ const PaymentPage: React.FC<PaymentPageProps> = ({
   const [isProcessing, setIsProcessing] = useState(false);
 
   const upiOptions = [
-    { name: 'Google Pay', icon: '🔴', id: 'googlepay' },
-    { name: 'PhonePe', icon: '🟣', id: 'phonepe' },
-    { name: 'Paytm', icon: '🔵', id: 'paytm' },
+    { name: 'Google Pay', icon: 'https://images.pexels.com/photos/6801648/pexels-photo-6801648.jpeg?auto=compress&cs=tinysrgb&w=50', id: 'googlepay' },
+    { name: 'PhonePe', icon: 'https://images.pexels.com/photos/6801648/pexels-photo-6801648.jpeg?auto=compress&cs=tinysrgb&w=50', id: 'phonepe' },
+    { name: 'Paytm', icon: 'https://images.pexels.com/photos/6801648/pexels-photo-6801648.jpeg?auto=compress&cs=tinysrgb&w=50', id: 'paytm' },
     { name: 'UPI ID', icon: '@', id: 'upi' }
   ];
 
@@ -105,7 +105,11 @@ const PaymentPage: React.FC<PaymentPageProps> = ({
                   key={option.id}
                   className="flex items-center space-x-3 p-4 bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors"
                 >
-                  <span className="text-2xl">{option.icon}</span>
+                  {option.id === 'upi' ? (
+                    <span className="text-2xl">{option.icon}</span>
+                  ) : (
+                    <img src={option.icon} alt={option.name} className="w-8 h-8 rounded" />
+                  )}
                   <span className="text-white font-medium">{option.name}</span>
                 </button>
               ))}
@@ -189,6 +193,9 @@ const PaymentPage: React.FC<PaymentPageProps> = ({
                   <div className="text-left">
                     <h3 className="text-white font-semibold text-lg">UPI</h3>
                     <p className="text-gray-400">Google Pay, PhonePe, Paytm, UPI ID</p>
+                  </div>
+                  <div className="ml-auto">
+                    <QrCode className="w-6 h-6 text-amber-400" />
                   </div>
                 </button>
 
