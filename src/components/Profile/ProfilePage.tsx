@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, User, Mail, Phone, MapPin, Calendar, Camera, Save, Edit } from 'lucide-react';
+import { ArrowLeft, User, Mail, Phone, MapPin, Calendar, Camera, Save, CreditCard as Edit } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 

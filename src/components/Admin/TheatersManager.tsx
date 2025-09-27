@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Edit, Trash2, Search, MapPin } from 'lucide-react';
+import { Plus, CreditCard as Edit, Trash2, Search, MapPin } from 'lucide-react';
 import { mockTheaters } from '../../data/mockData';
 import { Theater } from '../../types';
 

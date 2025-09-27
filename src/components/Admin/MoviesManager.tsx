@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Edit, Trash2, Search } from 'lucide-react';
+import { Plus, CreditCard as Edit, Trash2, Search } from 'lucide-react';
 import { mockMovies } from '../../data/mockData';
 import { Movie } from '../../types';
 
